@@ -1,15 +1,16 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
+
 namespace disclodo.Models
 {
-    public class Message
+    public class Channel
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
-        public string Content { get; set; } = String.Empty;
+        public Guid Id { get; set; }
+        public string Name { get; set; } = null!;
         public DateTime CreatedAt { get; set; }
-        public User Author { get; set; } = null!;
-        public Channel Channel { get; set; } = null!;
+        public List<User> Users { get; set; } = null!;
     }
 }
