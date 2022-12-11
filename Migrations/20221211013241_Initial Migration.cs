@@ -4,7 +4,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-namespace csharp.Migrations
+namespace disclodo.Migrations
 {
     /// <inheritdoc />
     public partial class InitialMigration : Migration

@@ -19,6 +19,12 @@ builder.Services.AddDbContext<DataContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 
+// To remove, dirty hack
+using (var context = new DataContext(builder.Services.BuildServiceProvider().GetRequiredService<DbContextOptions<DataContext>>()))
+{
+    context.Database.Migrate();
+}
+
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IChannelService, ChannelService>();
 builder.Services.AddScoped<IMessageService, MessageService>();
@@ -26,11 +32,14 @@ builder.Services.AddScoped<IMessageService, MessageService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+// if (app.Environment.IsDevelopment())
+// {
+//     app.UseSwagger();
+//     app.UseSwaggerUI();
+// }
+
+app.UseSwagger();
+app.UseSwaggerUI();
 
 app.UseHttpsRedirection();
 

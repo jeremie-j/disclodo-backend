@@ -8,7 +8,7 @@ using disclodo.Data;
 
 #nullable disable
 
-namespace csharp.Migrations
+namespace disclodo.Migrations
 {
     [DbContext(typeof(DataContext))]
     partial class DataContextModelSnapshot : ModelSnapshot
