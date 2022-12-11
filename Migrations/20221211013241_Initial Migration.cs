@@ -44,11 +44,11 @@ namespace csharp.Migrations
                 columns: table => new
                 {
                     ChannelsId = table.Column<Guid>(type: "uuid", nullable: false),
-                    UsersId = table.Column<Guid>(type: "uuid", nullable: false)
+                    ParticipantsId = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ChannelUser", x => new { x.ChannelsId, x.UsersId });
+                    table.PrimaryKey("PK_ChannelUser", x => new { x.ChannelsId, x.ParticipantsId });
                     table.ForeignKey(
                         name: "FK_ChannelUser_Channel_ChannelsId",
                         column: x => x.ChannelsId,
@@ -56,8 +56,8 @@ namespace csharp.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_ChannelUser_User_UsersId",
-                        column: x => x.UsersId,
+                        name: "FK_ChannelUser_User_ParticipantsId",
+                        column: x => x.ParticipantsId,
                         principalTable: "User",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -92,9 +92,9 @@ namespace csharp.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_ChannelUser_UsersId",
+                name: "IX_ChannelUser_ParticipantsId",
                 table: "ChannelUser",
-                column: "UsersId");
+                column: "ParticipantsId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Message_AuthorId",

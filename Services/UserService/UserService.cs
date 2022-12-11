@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 
 using disclodo.Data;
-using disclodo.Models;
 using disclodo.Dtos.User;
 using disclodo.UserExtensions;
 

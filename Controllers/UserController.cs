@@ -11,7 +11,7 @@ using disclodo.Services.UserService;
 
 namespace disclodo.Controllers
 {
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class UserController : Controller
     {
 
@@ -40,7 +40,7 @@ namespace disclodo.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<GetUserDto>> AddUser(PostUserDto user)
+        public async Task<ActionResult<GetUserDto>> AddUser([FromBody] PostUserDto user)
         {
             return Ok(await _userService.AddUser(user));
         }

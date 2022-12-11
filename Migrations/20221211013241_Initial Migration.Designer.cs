@@ -12,7 +12,7 @@ using disclodo.Data;
 namespace csharp.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20221210234332_Initial Migration")]
+    [Migration("20221211013241_Initial Migration")]
     partial class InitialMigration
     {
         /// <inheritdoc />
@@ -30,12 +30,12 @@ namespace csharp.Migrations
                     b.Property<Guid>("ChannelsId")
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("UsersId")
+                    b.Property<Guid>("ParticipantsId")
                         .HasColumnType("uuid");
 
-                    b.HasKey("ChannelsId", "UsersId");
+                    b.HasKey("ChannelsId", "ParticipantsId");
 
-                    b.HasIndex("UsersId");
+                    b.HasIndex("ParticipantsId");
 
                     b.ToTable("ChannelUser");
                 });
@@ -127,7 +127,7 @@ namespace csharp.Migrations
 
                     b.HasOne("disclodo.Models.User", null)
                         .WithMany()
-                        .HasForeignKey("UsersId")
+                        .HasForeignKey("ParticipantsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

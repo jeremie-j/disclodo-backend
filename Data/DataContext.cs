@@ -14,6 +14,7 @@ namespace disclodo.Data
             modelBuilder.Entity<User>().Property(u => u.CreatedAt).HasDefaultValueSql("now()");
             modelBuilder.Entity<Channel>().Property(c => c.Id).HasDefaultValueSql("gen_random_uuid()");
             modelBuilder.Entity<Channel>().Property(c => c.CreatedAt).HasDefaultValueSql("now()");
+            modelBuilder.Entity<Message>().Property(c => c.Id).ValueGeneratedOnAdd();
             modelBuilder.Entity<Message>().Property(c => c.CreatedAt).HasDefaultValueSql("now()");
         }
 

@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using disclodo.Data;
 using disclodo.Services.UserService;
 using disclodo.Services.ChannelService;
+using disclodo.Services.MessageService;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,7 +20,8 @@ builder.Services.AddDbContext<DataContext>(options =>
 });
 
 builder.Services.AddScoped<IUserService, UserService>();
-
+builder.Services.AddScoped<IChannelService, ChannelService>();
+builder.Services.AddScoped<IMessageService, MessageService>();
 
 var app = builder.Build();
 

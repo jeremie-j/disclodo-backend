@@ -3,58 +3,51 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
-using disclodo.Models;
 using disclodo.Data;
-
+using disclodo.Dtos.Message;
+using disclodo.Services.MessageService;
 namespace disclodo.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
     public class MessageController : ControllerBase
     {
-        private readonly DataContext _context;
-        private static Message message = new Message();
-        private static List<Message> messageList = new List<Message>{
-            new Message{Id= 1,Content = "HELLO"},
-            new Message{Content = "Coucou"}
-        };
+        private readonly IMessageService _messageService;
 
-        public MessageController(DataContext context)
+        public MessageController(IMessageService messageService)
         {
-            _context = context;
+            _messageService = messageService;
         }
 
-        [HttpGet("")]
-        public ActionResult<IEnumerable<User>> GetAll()
+        [HttpGet("{channelId}")]
+        public async Task<ActionResult<List<GetMessageDto>>> GetChannelMessages(Guid channelId)
         {
-            var users = _context.User.ToList();
-            // var user = _context.User.Add(new User { Username = "test" });
-            // _context.SaveChanges();
-            return Ok(users);
+            return Ok(await _messageService.GetChannelMessages(channelId));
         }
 
-        [HttpGet("/test")]
-        public ActionResult<User> GetOne()
+        [HttpPost]
+        public async Task<ActionResult<GetMessageDto>> AddMessage([FromBody] PostMessageDto message)
         {
-            var user = new User { Username = "test" };
-            _context.User.Add(user);
-            _context.SaveChanges();
-            return Ok(user);
+            return Ok(await _messageService.AddMessage(message));
         }
 
-        [HttpGet("{id}")]
-        public ActionResult<Message> GetById(int id)
+        [HttpPut("{id}")]
+        public async Task<ActionResult<GetMessageDto>> UpdateMessage([FromBody] PutMessageDto message, int id)
         {
-            var result = messageList.FirstOrDefault(m => m.Id == id);
-            if (result == null)
+            return Ok(await _messageService.UpdateMessage(message, id));
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> DeleteMessage(int id)
+        {
+            var success = await _messageService.DeleteMessage(id);
+            if (success)
             {
-                return NotFound();
+                return NoContent();
             }
-            else
-            {
-                return Ok(result);
-            }
+            return NotFound();
         }
     }
 }
