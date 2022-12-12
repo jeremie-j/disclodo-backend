@@ -31,6 +31,11 @@ namespace webapi.Controllers
         [HttpPost("register")]
         public async Task<ActionResult<string>> Register(RegisterUserDto request)
         {
+            if (await _userService.GetUserByUsername(request.Username) != null)
+            {
+                return BadRequest("Username is taken");
+            }
+
             _authService.CreatePasswordHash(request.Password, out byte[] passwordHash, out byte[] passwordSalt);
             var user = new User
             {

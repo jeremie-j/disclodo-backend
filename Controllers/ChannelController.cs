@@ -23,7 +23,7 @@ namespace disclodo.Controllers
             _channelService = userService;
         }
 
-        [HttpGet]
+        [HttpGet("{userId}")]
         public async Task<ActionResult<List<GetChannelDto>>> GetUserChannels(Guid userId)
         {
             return Ok(await _channelService.GetUserChannels(userId));
