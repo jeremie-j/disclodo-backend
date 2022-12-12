@@ -12,4 +12,6 @@ public interface IAuthService
     public void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt);
     public bool VerifyPasswordHash(User user, string password, byte[] passwordHash, byte[] passwordSalt);
     public string CreateToken(User user);
+    public string CreateSubscriberMercureToken(List<Channel> channels);
+    public string CreatePublisherMercureToken();
 }

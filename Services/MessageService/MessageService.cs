@@ -7,14 +7,20 @@ using Microsoft.EntityFrameworkCore;
 using disclodo.Data;
 using disclodo.Dtos.Message;
 using disclodo.MessageExtensions;
+using disclodo.Services.AuthService;
+using System.Net.Http.Headers;
+using System.Text.Json;
+
 namespace disclodo.Services.MessageService;
 
 public class MessageService : IMessageService
 {
     private readonly DataContext _context;
-    public MessageService(DataContext context)
+    private readonly IAuthService _authService;
+    public MessageService(DataContext context, IAuthService authService)
     {
         _context = context;
+        _authService = authService;
     }
     public async Task<GetMessageDto?> AddMessage(PostMessageDto message)
     {
@@ -25,6 +31,8 @@ public class MessageService : IMessageService
         var createdMessage = message.ToMessage(author, channel);
         await _context.Message.AddAsync(createdMessage);
         await _context.SaveChangesAsync();
+        
+        PublishMessage(createdMessage.ToGetMessageDto());
         return createdMessage.ToGetMessageDto();
     }
     public async Task<List<GetMessageDto>> GetChannelMessages(Guid channelId)
@@ -49,5 +57,20 @@ public class MessageService : IMessageService
         _context.Message.Remove(message);
         var deleted = await _context.SaveChangesAsync();
         return deleted > 0;
+    }
+
+    public async void PublishMessage(GetMessageDto message)
+    {
+        var token = _authService.CreatePublisherMercureToken();
+        var client = new HttpClient();
+        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+        var response = await client.PostAsync("http://localhost:1234/.well-known/mercure", new FormUrlEncodedContent(new[] { 
+            new KeyValuePair<string, string>("topic", $"http://localhost:1234/channel/{message.ChannelId}"), 
+            new KeyValuePair<string, string>("data", JsonSerializer.Serialize(message))
+        }));
+        if (response.StatusCode != System.Net.HttpStatusCode.OK)
+        {
+            throw new Exception("Failed to publish message");
+        }
     }
 }

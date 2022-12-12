@@ -66,5 +66,20 @@ namespace webapi.Controllers
             string token = _authService.CreateToken(user);
             return Ok(token);
         }
+
+        [HttpPost("mercureToken")]
+        public async Task<ActionResult<string>> GetMercureToken(string username)
+        {
+            var user = await _userService.GetUserByUsername(username);
+
+            if (user == null)
+            {
+                return BadRequest("User not found");
+            }
+            
+            string token = _authService.CreateSubscriberMercureToken(user.Channels);
+            return Ok(token);
+        }
+
     }
 }

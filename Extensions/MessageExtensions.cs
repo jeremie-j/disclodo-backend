@@ -17,7 +17,7 @@ public static class MessageExtensions
             Id = message.Id,
             Content = message.Content,
             CreatedAt = message.CreatedAt,
-            AuthorId = message.Author.Id,
+            Author = message.Author.Username,
             ChannelId = message.Channel.Id,
         };
     }

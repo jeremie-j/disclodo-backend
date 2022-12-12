@@ -57,7 +57,7 @@ public class UserService : IUserService
 
     public async Task<User?> GetUserByUsername(string username)
     {
-        var result = await _context.User.FirstOrDefaultAsync(user => user.Username == username);
+        var result = await _context.User.Include(u=>u.Channels).FirstOrDefaultAsync(user => user.Username == username);
         return result;
     }
     public async Task<List<GetUserDto>> SearchUser(string username)
