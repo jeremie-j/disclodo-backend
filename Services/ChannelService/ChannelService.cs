@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using disclodo.Data;
 using disclodo.Dtos.Channel;
 using disclodo.ChannelExtensions;
+using disclodo.Models;
 namespace disclodo.Services.ChannelService;
 
 public class ChannelService : IChannelService
@@ -26,7 +27,7 @@ public class ChannelService : IChannelService
     }
     public async Task<List<GetChannelDto>> GetUserChannels(Guid userId)
     {
-        var result = await _context.User.Where(u => u.Id == userId).FirstOrDefaultAsync();
+        var result = await _context.User.Include(u=>u.Channels).Where(u => u.Id == userId).FirstOrDefaultAsync();
         if (result == null)
         {
             return null!;
