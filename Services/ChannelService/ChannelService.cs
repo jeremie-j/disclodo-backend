@@ -27,12 +27,13 @@ public class ChannelService : IChannelService
     }
     public async Task<List<GetChannelDto>> GetUserChannels(Guid userId)
     {
-        var result = await _context.User.Include(u=>u.Channels).Where(u => u.Id == userId).FirstOrDefaultAsync();
-        if (result == null)
+        var user = await _context.User.Where(u => u.Id == userId).FirstOrDefaultAsync();
+        if (user == null)
         {
             return null!;
         }
-        return result.Channels.Select(channel => channel.ToGetChannelDto()).ToList();
+        var channels = await _context.Entry(user).Collection(u => u.Channels).Query().ToListAsync();
+        return channels.Select(channel => channel.ToGetChannelDto()).ToList();
     }
     public async Task<GetChannelDto> AddUsersToChannel(Guid channelId, List<Guid> userIds)
     {
