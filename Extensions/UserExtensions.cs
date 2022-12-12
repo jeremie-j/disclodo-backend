@@ -5,15 +5,6 @@ namespace disclodo.UserExtensions;
 
 public static class UserExtensions
 {
-    public static User ToUser(this PostUserDto user)
-    {
-        return new User
-        {
-            Username = user.Username,
-            ProfilePicture = user.ProfilePicture
-        };
-    }
-
     public static GetUserDto ToGetUserDto(this User user)
     {
         return new GetUserDto

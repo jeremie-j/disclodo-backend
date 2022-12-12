@@ -22,6 +22,11 @@ services:
       context: .
       dockerfile: Dockerfile
     ports:
-      - 5678:80
+      - 5678:5678
+      - 5679:5679
+    environment:
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=Myprivatekeypassword123
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=./certificate.pfx
+
     depends_on:
       - db

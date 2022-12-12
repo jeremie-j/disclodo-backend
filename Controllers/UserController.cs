@@ -39,12 +39,6 @@ namespace disclodo.Controllers
             return Ok(result);
         }
 
-        [HttpPost]
-        public async Task<ActionResult<GetUserDto>> AddUser([FromBody] PostUserDto user)
-        {
-            return Ok(await _userService.AddUser(user));
-        }
-
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteUser(Guid id)
         {

@@ -12,8 +12,8 @@ using disclodo.Data;
 namespace disclodo.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20221211013241_Initial Migration")]
-    partial class InitialMigration
+    [Migration("20221212095838_Add register")]
+    partial class Addregister
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -105,6 +105,14 @@ namespace disclodo.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasDefaultValueSql("now()");
 
+                    b.Property<byte[]>("PasswordHash")
+                        .IsRequired()
+                        .HasColumnType("bytea");
+
+                    b.Property<byte[]>("PasswordSalt")
+                        .IsRequired()
+                        .HasColumnType("bytea");
+
                     b.Property<string>("ProfilePicture")
                         .HasColumnType("text");
 
@@ -113,6 +121,9 @@ namespace disclodo.Migrations
                         .HasColumnType("text");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Username")
+                        .IsUnique();
 
                     b.ToTable("User");
                 });

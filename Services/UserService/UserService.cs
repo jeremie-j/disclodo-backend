@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using disclodo.Data;
 using disclodo.Dtos.User;
 using disclodo.UserExtensions;
+using disclodo.Models;
 
 namespace disclodo.Services.UserService;
 
@@ -18,9 +19,9 @@ public class UserService : IUserService
         _context = context;
     }
 
-    public async Task<GetUserDto> AddUser(PostUserDto user)
+    public async Task<GetUserDto> RegisterUser(User user)
     {
-        var createdUser = user.ToUser();
+        var createdUser = user;
         await _context.User.AddAsync(createdUser);
         await _context.SaveChangesAsync();
         return createdUser.ToGetUserDto();
@@ -52,5 +53,16 @@ public class UserService : IUserService
         _context.User.Remove(user);
         var deleted = await _context.SaveChangesAsync();
         return deleted > 0;
+    }
+
+    public async Task<User?> GetUserByUsername(string username)
+    {
+        var result = await _context.User.FirstOrDefaultAsync(user => user.Username == username);
+        return result;
+    }
+    public async Task<List<User>> SearchUser(string username)
+    {
+        var result = await _context.User.Where(user => user.Username.Contains(username)).ToListAsync();
+        return result;
     }
 }
