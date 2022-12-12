@@ -30,7 +30,9 @@ namespace disclodo.Controllers
         [HttpPost]
         public async Task<ActionResult<GetMessageDto>> AddMessage([FromBody] PostMessageDto message)
         {
-            return Ok(await _messageService.AddMessage(message));
+            var createdMessage = await _messageService.AddMessage(message);
+            if (createdMessage == null){return NotFound("Channel or user not found");}
+            return Ok(createdMessage);
         }
 
         [HttpPut("{id}")]

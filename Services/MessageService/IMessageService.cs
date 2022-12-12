@@ -9,7 +9,7 @@ namespace disclodo.Services.MessageService;
 
 public interface IMessageService
 {
-    public Task<GetMessageDto> AddMessage(PostMessageDto message);
+    public Task<GetMessageDto?> AddMessage(PostMessageDto message);
     public Task<List<GetMessageDto>> GetChannelMessages(Guid userId);
     public Task<GetMessageDto> UpdateMessage(PutMessageDto message, int messageId);
     public Task<bool> DeleteMessage(int id);

@@ -16,11 +16,11 @@ public class MessageService : IMessageService
     {
         _context = context;
     }
-    public async Task<GetMessageDto> AddMessage(PostMessageDto message)
+    public async Task<GetMessageDto?> AddMessage(PostMessageDto message)
     {
         var author = await _context.User.FindAsync(message.AuthorId);
         var channel = await _context.Channel.FindAsync(message.ChannelId);
-        if (author == null || channel == null) return null!;
+        if (author == null || channel == null) return null;
 
         var createdMessage = message.ToMessage(author, channel);
         await _context.Message.AddAsync(createdMessage);
@@ -29,7 +29,7 @@ public class MessageService : IMessageService
     }
     public async Task<List<GetMessageDto>> GetChannelMessages(Guid channelId)
     {
-        var messages = await _context.Message.Include(m => m.Channel).Where(m => m.Channel.Id == channelId).ToListAsync();
+        var messages = await _context.Message.Include(m => m.Channel).Where(m => m.Channel.Id == channelId).Include(m => m.Author).ToListAsync();
         return messages.Select(m => m.ToGetMessageDto()).ToList();
     }
 
