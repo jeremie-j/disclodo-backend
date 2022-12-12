@@ -60,9 +60,9 @@ public class UserService : IUserService
         var result = await _context.User.FirstOrDefaultAsync(user => user.Username == username);
         return result;
     }
-    public async Task<List<User>> SearchUser(string username)
+    public async Task<List<GetUserDto>> SearchUser(string username)
     {
         var result = await _context.User.Where(user => user.Username.Contains(username)).ToListAsync();
-        return result;
+        return result.Select(user => user.ToGetUserDto()).ToList();
     }
 }

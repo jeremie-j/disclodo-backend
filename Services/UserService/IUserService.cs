@@ -14,5 +14,5 @@ public interface IUserService
     public Task<List<GetUserDto>> GetUsers();
     public Task<bool> DeleteUser(Guid id);
     public Task<User?> GetUserByUsername(string username);
-    public Task<List<User>> SearchUser(string username);
+    public Task<List<GetUserDto>> SearchUser(string username);
 }

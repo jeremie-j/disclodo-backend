@@ -61,6 +61,5 @@ namespace webapi.Controllers
             string token = _authService.CreateToken(user);
             return Ok(token);
         }
-
     }
 }

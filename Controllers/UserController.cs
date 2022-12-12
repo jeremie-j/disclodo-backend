@@ -39,6 +39,13 @@ namespace disclodo.Controllers
             return Ok(result);
         }
 
+        [HttpGet("search/{username}")]
+        public async Task<ActionResult<List<GetUserDto>>> SearchUsers(string username)
+        {
+            var result = await _userService.SearchUser(username);
+            return Ok(result);
+        }
+
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteUser(Guid id)
         {

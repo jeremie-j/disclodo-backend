@@ -38,8 +38,8 @@ namespace disclodo.Services.AuthService
         {
             List<Claim> claims = new List<Claim>
                 {
-                new Claim(ClaimTypes.Name, user.Username)
-                // new Claim(ClaimTypes., user.Username)
+                new Claim("username", user.Username),
+                new Claim("uid", user.Id.ToString())
                 };
             var key = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(config.GetSection("AppSettings:Token").Value));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
