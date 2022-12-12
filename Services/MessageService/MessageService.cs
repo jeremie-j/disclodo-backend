@@ -29,7 +29,7 @@ public class MessageService : IMessageService
     }
     public async Task<List<GetMessageDto>> GetChannelMessages(Guid channelId)
     {
-        var messages = await _context.Message.Where(m => m.Channel.Id == channelId).ToListAsync();
+        var messages = await _context.Message.Include(m => m.Channel).Where(m => m.Channel.Id == channelId).ToListAsync();
         return messages.Select(m => m.ToGetMessageDto()).ToList();
     }
 
